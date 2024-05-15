@@ -3,11 +3,13 @@ const boardSize = 15;
 let board = [];
 let currentPlayer = 'X';
 let gameOver = false;
+let moveHistory = [];
 
 document.addEventListener("DOMContentLoaded", () => {
     const boardElement = document.getElementById('board');
     const statusElement = document.getElementById('status');
     const restartButton = document.getElementById('restart');
+    const undoButton = document.getElementById('undo');
 
     // 初始化棋盘
     function initBoard() {
@@ -44,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const col = event.target.dataset.col;
         if (board[row][col] === '') {
             board[row][col] = currentPlayer;
+            moveHistory.push({ row, col, player: currentPlayer });
             if (checkWin(row, col)) {
                 statusElement.innerText = `${currentPlayer} 赢了！`;
                 gameOver = true;
@@ -88,9 +91,21 @@ document.addEventListener("DOMContentLoaded", () => {
     restartButton.addEventListener('click', () => {
         gameOver = false;
         currentPlayer = 'X';
+        moveHistory = [];
         statusElement.innerText = `当前玩家: ${currentPlayer}`;
         initBoard();
         renderBoard();
+    });
+
+    // 悔棋功能
+    undoButton.addEventListener('click', () => {
+        if (moveHistory.length > 0 && !gameOver) {
+            const lastMove = moveHistory.pop();
+            board[lastMove.row][lastMove.col] = '';
+            currentPlayer = lastMove.player;
+            statusElement.innerText = `当前玩家: ${currentPlayer}`;
+            renderBoard();
+        }
     });
 
     // 初始化游戏
