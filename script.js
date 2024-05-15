@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const restartButton = document.getElementById('restart');
     const undoButton = document.getElementById('undo');
 
+    console.log("Document loaded and script running.");
+
     // 初始化棋盘
     function initBoard() {
         board = [];
@@ -21,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             board.push(row);
         }
+        console.log("Board initialized:", board);
     }
 
     // 渲染棋盘
@@ -37,6 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 boardElement.appendChild(cell);
             }
         }
+        console.log("Board rendered.");
     }
 
     // 处理点击事件
